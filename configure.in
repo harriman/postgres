@@ -19,10 +19,14 @@ m4_pattern_forbid(^PGAC_)dnl to catch undefined macros
 
 AC_INIT([PostgreSQL], [9.1devel], [pgsql-bugs@postgresql.org])
 
+AC_PREREQ([2.63])[]dnl Autoconf must be this version or newer
+m4_ignore([
 m4_if(m4_defn([m4_PACKAGE_VERSION]), [2.63], [], [m4_fatal([Autoconf version 2.63 is required.
 Untested combinations of 'autoconf' and PostgreSQL versions are not
 recommended.  You can remove the check from 'configure.in' but it is then
 your responsibility whether the result works or not.])])
+])
+
 AC_COPYRIGHT([Copyright (c) 1996-2011, PostgreSQL Global Development Group])
 AC_CONFIG_SRCDIR([src/backend/access/common/heaptuple.c])
 AC_CONFIG_AUX_DIR(config)
