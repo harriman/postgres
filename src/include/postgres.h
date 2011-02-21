@@ -45,6 +45,11 @@
 #define POSTGRES_H
 
 #include "c.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "utils/elog.h"
 #include "utils/palloc.h"
 
@@ -686,5 +691,10 @@ extern PGDLLIMPORT bool assert_enabled;
 extern int ExceptionalCondition(const char *conditionName,
 					 const char *errorType,
 					 const char *fileName, int lineNumber);
+
+
+#ifdef __cplusplus
+}   /* extern "C" */
+#endif
 
 #endif   /* POSTGRES_H */

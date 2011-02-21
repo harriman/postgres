@@ -6,7 +6,8 @@
 
 # When including this file, set OBJS to the object files created in
 # this directory and SUBDIRS to subdirectories containing more things
-# to build.
+# to build.  Set CXXOBJS to the subset of OBJS which are to be C++
+# compiled from '.c' source files.
 
 ifdef PARTIAL_LINKING
 # old style: linking using SUBSYS.o
@@ -35,6 +36,11 @@ expand_subsys = $(foreach file,$(1),$(if $(filter %/objfiles.txt,$(file)),$(pats
 
 # Parallel make trickery
 $(SUBDIROBJS): $(SUBDIRS:%=%-recursive) ;
+
+# For .o files listed in CXXOBJS, use C++ compiler to make .o from .c
+$(CXXOBJS) : %.o: %.c
+	$(DEPMKDIR)
+	$(COMPILE.cc) $(DEPFLAGS) -o $@ $<
 
 .PHONY: $(SUBDIRS:%=%-recursive)
 $(SUBDIRS:%=%-recursive):

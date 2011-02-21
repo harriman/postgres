@@ -169,6 +169,7 @@ enable_nls	= @enable_nls@
 enable_debug	= @enable_debug@
 enable_dtrace	= @enable_dtrace@
 enable_coverage	= @enable_coverage@
+enable_cplusplus	= @enable_cplusplus@
 enable_thread_safety	= @enable_thread_safety@
 
 python_includespec	= @python_includespec@
@@ -215,6 +216,21 @@ CC = @CC@
 GCC = @GCC@
 SUN_STUDIO_CC = @SUN_STUDIO_CC@
 CFLAGS = @CFLAGS@
+
+CXX = @CXX@
+CXXCPP = @CXXCPP@
+CXXFLAGS = @CXXFLAGS@
+GXX = @GXX@
+
+# gmake predefines these and uses them in its predefined implicit rules.
+# We include them here just in case someone uses a version of gmake which
+# doesn't have them built in.  These are as defined by gmake 3.81.
+COMPILE.c   ?= $(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+LINK.c      ?= $(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+COMPILE.cc  ?= $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
+LINK.cc     ?= $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH)
+COMPILE.cpp ?= $(COMPILE.cc)
+LINK.cpp    ?= $(LINK.cc)
 
 # Kind-of compilers
 
@@ -613,18 +629,25 @@ autodepend = @autodepend@
 
 ifeq ($(autodepend), yes)
 
-ifndef COMPILE.c
-COMPILE.c = $(CC) $(CFLAGS) $(CPPFLAGS) -c
-endif
-
 DEPDIR = .deps
+DEPMKDIR = @if test ! -d $(DEPDIR); then $(MKDIR_P) $(DEPDIR); fi
 
 ifeq ($(GCC), yes)
 
 # GCC allows us to create object and dependency file in one invocation.
+DEPFLAGS = -MMD -MP -MF $(DEPDIR)/$(*F).Po
+
 %.o : %.c
-	@if test ! -d $(DEPDIR); then mkdir -p $(DEPDIR); fi
-	$(COMPILE.c) -o $@ $< -MMD -MP -MF $(DEPDIR)/$(*F).Po
+	$(DEPMKDIR)
+	$(COMPILE.c) $(DEPFLAGS) -o $@ $<
+
+%.o : %.cc
+	$(DEPMKDIR)
+	$(COMPILE.cc) $(DEPFLAGS) -o $@ $<
+
+%.o: %.cpp
+	$(DEPMKDIR)
+	$(COMPILE.cpp) $(DEPFLAGS) -o $@ $<
 
 endif # GCC
 

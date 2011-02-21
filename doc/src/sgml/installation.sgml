@@ -1156,6 +1156,17 @@ su - postgres
       </varlistentry>
 
       <varlistentry>
+       <term><option>--enable-cplusplus</option></term>
+       <listitem>
+        <para>
+         Compiles the <filename>postgres</> server with C++ runtime
+         library support.  Specify this option only if you intend to use or
+         develop server extensions or modifications in the C++ language.
+        </para>
+       </listitem>
+      </varlistentry>
+
+      <varlistentry>
        <term><option>--enable-cassert</option></term>
        <listitem>
         <para>

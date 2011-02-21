@@ -128,7 +128,8 @@ fi])# PGAC_C_FUNCNAME_SUPPORT
 AC_DEFUN([PGAC_PROG_CC_CFLAGS_OPT],
 [define([Ac_cachevar], [AS_TR_SH([pgac_cv_prog_cc_cflags_$1])])dnl
 AC_CACHE_CHECK([whether $CC supports $1], [Ac_cachevar],
-[pgac_save_CFLAGS=$CFLAGS
+[AC_LANG_ASSERT([C])
+pgac_save_CFLAGS=$CFLAGS
 CFLAGS="$pgac_save_CFLAGS $1"
 _AC_COMPILE_IFELSE([AC_LANG_PROGRAM()],
                    [Ac_cachevar=yes],
@@ -139,6 +140,23 @@ if test x"$Ac_cachevar" = x"yes"; then
 fi
 undefine([Ac_cachevar])dnl
 ])# PGAC_PROG_CC_CFLAGS_OPT
+
+
+
+# PGAC_PROG_CXX_CXXFLAGS_OPT
+# -----------------------
+# Given a string, check if the C++ compiler supports the string as a
+# command-line option. If it does, add the string to CXXFLAGS.
+AC_DEFUN([PGAC_PROG_CXX_CXXFLAGS_OPT],
+[AC_MSG_CHECKING([if $CXX supports $1])
+AC_LANG_ASSERT([C++])
+pgac_save_CXXFLAGS=$CXXFLAGS
+CXXFLAGS="$pgac_save_CXXFLAGS $1"
+_AC_COMPILE_IFELSE([AC_LANG_PROGRAM()],
+                   AC_MSG_RESULT(yes),
+                   [CXXFLAGS="$pgac_save_CXXFLAGS"
+                    AC_MSG_RESULT(no)])
+])# PGAC_PROG_CXX_CXXFLAGS_OPT
 
 
 

@@ -35,6 +35,14 @@
 #include <sys/param.h>
 #endif
 
+#if defined(ENABLE_CPLUSPLUS) && !defined(__cplusplus)
+#error --enable-cplusplus configure option specified; this file should be compiled as C++
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "bootstrap/bootstrap.h"
 #include "postmaster/postmaster.h"
 #include "tcop/tcopprot.h"
@@ -53,6 +61,10 @@ static void startup_hacks(const char *progname);
 static void help(const char *progname);
 static void check_root(const char *progname);
 static char *get_current_username(const char *progname);
+
+#ifdef __cplusplus
+}   /* extern "C" */
+#endif
 
 
 /*

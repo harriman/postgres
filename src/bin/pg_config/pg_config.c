@@ -311,6 +311,38 @@ show_cflags_sl(bool all)
 }
 
 static void
+show_cxx(bool all)
+{
+#ifdef VAL_CXX
+	if (all)
+		printf("CXX = ");
+	printf("%s\n", VAL_CXX);
+#else
+	if (!all)
+	{
+		fprintf(stderr, _("not recorded\n"));
+		exit(1);
+	}
+#endif
+}
+
+static void
+show_cxxflags(bool all)
+{
+#ifdef VAL_CXXFLAGS
+	if (all)
+		printf("CXXFLAGS = ");
+	printf("%s\n", VAL_CXXFLAGS);
+#else
+	if (!all)
+	{
+		fprintf(stderr, _("not recorded\n"));
+		exit(1);
+	}
+#endif
+}
+
+static void
 show_ldflags(bool all)
 {
 #ifdef VAL_LDFLAGS
@@ -413,6 +445,8 @@ static const InfoItem info_items[] = {
 	{"--cppflags", show_cppflags},
 	{"--cflags", show_cflags},
 	{"--cflags_sl", show_cflags_sl},
+	{"--cxx", show_cxx},
+	{"--cxxflags", show_cxxflags},
 	{"--ldflags", show_ldflags},
 	{"--ldflags_ex", show_ldflags_ex},
 	{"--ldflags_sl", show_ldflags_sl},
@@ -449,6 +483,8 @@ help(void)
 	printf(_("  --cppflags            show CPPFLAGS value used when PostgreSQL was built\n"));
 	printf(_("  --cflags              show CFLAGS value used when PostgreSQL was built\n"));
 	printf(_("  --cflags_sl           show CFLAGS_SL value used when PostgreSQL was built\n"));
+	printf(_("  --cxx                 show CXX value used when PostgreSQL was built\n"));
+	printf(_("  --cxxflags            show CXXFLAGS value used when PostgreSQL was built\n"));
 	printf(_("  --ldflags             show LDFLAGS value used when PostgreSQL was built\n"));
 	printf(_("  --ldflags_ex          show LDFLAGS_EX value used when PostgreSQL was built\n"));
 	printf(_("  --ldflags_sl          show LDFLAGS_SL value used when PostgreSQL was built\n"));

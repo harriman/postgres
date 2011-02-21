@@ -52,7 +52,12 @@ ifneq ($(PORTNAME), win32)
 ifneq ($(PORTNAME), aix)
 
 postgres: $(OBJS)
+ifeq ($(enable_cplusplus), yes)
+	# Link with C++ runtime support
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(LDFLAGS_EX) $(export_dynamic) $(call expand_subsys,$^) $(LIBS) -o $@
+else
 	$(CC) $(CFLAGS) $(LDFLAGS) $(LDFLAGS_EX) $(export_dynamic) $(call expand_subsys,$^) $(LIBS) -o $@
+endif
 
 endif
 endif
@@ -133,7 +138,12 @@ $(top_builddir)/src/port/libpgport_srv.a: | submake-libpgport
 # The postgres.o target is needed by the rule in Makefile.global that
 # creates the exports file when MAKE_EXPORTS = true.
 postgres.o: $(OBJS)
+ifeq ($(enable_cplusplus), yes)
+	# Link with C++ runtime support
+	$(CXX) $(LDREL) $(LDFLAGS) $(LDFLAGS_EX) $(call expand_subsys,$^) $(LIBS) -o $@
+else
 	$(CC) $(LDREL) $(LDFLAGS) $(LDFLAGS_EX) $(call expand_subsys,$^) $(LIBS) -o $@
+endif
 
 
 # The following targets are specified in make commands that appear in
@@ -320,4 +330,9 @@ maintainer-clean: distclean
 # are up to date.  It saves the time of doing all the submakes.
 .PHONY: quick
 quick: $(OBJS)
+ifeq ($(enable_cplusplus), yes)
+	# Link with C++ runtime support
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) $(LDFLAGS_EX) $(export_dynamic) $(call expand_subsys,$^) $(LIBS) -o postgres
+else
 	$(CC) $(CFLAGS) $(LDFLAGS) $(LDFLAGS_EX) $(export_dynamic) $(call expand_subsys,$^) $(LIBS) -o postgres
+endif

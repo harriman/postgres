@@ -745,6 +745,10 @@ typedef NameData *Name;
  * ----------------------------------------------------------------
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  *	NOTE:  this is also used for opening text files.
  *	WIN32 treats Control-Z as EOF in files opened in text mode.
@@ -849,5 +853,10 @@ extern int	fdatasync(int fildes);
 
 /* /port compatibility functions */
 #include "port.h"
+
+
+#ifdef __cplusplus
+}   /* extern "C" */
+#endif
 
 #endif   /* C_H */

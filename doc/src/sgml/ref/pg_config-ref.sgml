@@ -223,6 +223,27 @@
     </varlistentry>
 
     <varlistentry>
+     <term><option>--cxx</option></>
+     <listitem>
+      <para>
+       Print the value of the <varname>CXX</varname> variable showing the C++
+       compiler that was used for building C++ modules (if any) in the
+       <productname>PostgreSQL</> backend.
+      </para>
+     </listitem>
+    </varlistentry>
+
+    <varlistentry>
+     <term><option>--cxxflags</option></>
+     <listitem>
+      <para>
+       Print the value of the <varname>CXXFLAGS</varname> variable that was used for building
+       <productname>PostgreSQL</>.  This shows C++ compiler switches.
+      </para>
+     </listitem>
+    </varlistentry>
+
+    <varlistentry>
      <term><option>--ldflags</option></>
      <listitem>
       <para>
